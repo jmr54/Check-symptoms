@@ -20,7 +20,20 @@ app.get('/analysis', async (req, res) => {
         },
     }); 
     const responseJSON = await response.json();
-    res.json(responseJSON)
+    const token = responseJSON.Token;
+
+    /*const symptomUri = 'https://sandbox-healthservice.priaid.ch/symptoms'
+    const symptomResponse = await fetch(symptomUri + '?token=' + token + '&language=en-gb')
+    const symptomReponseeJson = await symptomResponse.json() */
+
+    const diagUri = 'https://sandbox-healthservice.priaid.ch/diagnosis'
+    const symptoms = req.query.symptoms
+    const gender = req.query.gender
+    const yearOfBirth = req.query.yearOfBirth
+    const diagResponse = await fetch(diagUri + '?token=' + token + '&language=en-gb'+ '&symptoms=' + symptoms + '&gender=' + gender + '&year_of_birth=' + yearOfBirth)
+    const diagReponseeJson = await diagResponse.json() 
+
+    res.json(diagReponseeJson)
 })
 
 app.get('/login', (req,res) =>{
